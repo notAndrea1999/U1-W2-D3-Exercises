@@ -1,3 +1,4 @@
+import shop.CategoryFilter;
 import shop.Customer;
 import shop.Order;
 import shop.Product;
@@ -9,6 +10,10 @@ import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) {
+
+        CategoryFilter categoryFilter = (book, str) -> book.getCategory().equals(str);
+
+
         List<Product> productList = new ArrayList<>();
         List<Order> orderList = new ArrayList<>();
 
@@ -62,20 +67,20 @@ public class Main {
         // EXERCISE 1
         System.out.println("************************* EXERCISE 1 ***************************");
         Predicate<Product> isMoreThenOneHundred = price -> price.getPrice() > 100;
-        Predicate<Product> isItABook = category -> category.getCategory().equals("Books");
-        List<Product> bookProduct = productList.stream().filter(isMoreThenOneHundred.and(isItABook)).toList();
+        //Predicate<Product> isItABook = category -> category.getCategory().equals("Books");
+        List<Product> bookProduct = productList.stream().filter(isMoreThenOneHundred).filter(p -> categoryFilter.categoryFilter(p, "Books")).toList();
         bookProduct.forEach(System.out::println);
 
         // EXERCISE 2
         System.out.println("************************* EXERCISE 2 ***************************");
         Predicate<Product> isItBaby = category -> category.getCategory().equals("Baby");
-        List<Product> babyProduct = productList.stream().filter(isItBaby).toList();
+        List<Product> babyProduct = productList.stream().filter(p -> categoryFilter.categoryFilter(p, "Baby")).toList();
         babyProduct.forEach(System.out::println);
 
         // EXERCISE 3
         System.out.println("************************* EXERCISE 3 ***************************");
         Predicate<Product> isItBoy = category -> category.getCategory().equals("Boy");
-        List<Product> boyProduct = productList.stream().filter(isItBoy).toList();
+        List<Product> boyProduct = productList.stream().filter(p -> categoryFilter.categoryFilter(p, "Boy")).toList();
         boyProduct.forEach(product -> {
             product.discount();
             System.out.println(product);
